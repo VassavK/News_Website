@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Himachal Pradesh News</title>
+  <style>
+    /* CSS Styles for the News Website */
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 80%;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .news-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .news-list li {
+      margin-bottom: 20px;
+    }
+
+    .news-list li .title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .news-list li .date {
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Himachal Pradesh News</h1>
+    <ul class="news-list" id="news-list">
+      <!-- News articles will be dynamically added here using JavaScript -->
+    </ul>
+  </div>
+
+  <script>
+    // JavaScript to fetch and display news data
+    window.addEventListener('DOMContentLoaded', function () {
+      fetchNews();
+    });
+
+    function fetchNews() {
+      // Replace this URL with the actual News API endpoint
+      const apiKey = '25884ba2c2294190b4ae9ad8d2e1a4bb';
+      const apiUrl = `https://newsapi.org/v2/everything?q=Himachal%20Pradesh&apiKey=${apiKey}`;
+
+      // Fetch news data from the News API
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Get the news list element
+          const newsList = document.getElementById('news-list');
+
+          // Clear existing news articles
+          newsList.innerHTML = '';
+
+          // Loop through the news articles and create news elements
+          data.articles.forEach(article => {
+            // Create news article element
+            const newsArticle = document.createElement('li');
+
+            // Set the title and date of the news article
+            newsArticle.innerHTML = `
+              <div class="title">${article.title}</div>
+              <div class="date">${new Date(article.publishedAt).toDateString()}</div>
+              <div class="description">${article.description}</div>
+              <div class="source">Source: ${article.source.name}</div>
+              <a href="${article.url}" target="_blank" rel="noopener noreferrer">Read More</a>
+            `;
+
+            // Append the news article to the news list
+            newsList.appendChild(newsArticle);
+          });
+        })
+        .catch(error => console.error(error));
+    }
+  </script>
+</body>
+
+</html>
